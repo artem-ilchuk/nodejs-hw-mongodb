@@ -8,7 +8,6 @@ export const createContact = async (payload) => {
 export const updateContact = async (contactId, payload, options = {}) => {
   const renewedContact = await Contact.findByIdAndUpdate(contactId, payload, {
     new: true,
-    ...options,
   });
 
   if (!renewedContact) return null;

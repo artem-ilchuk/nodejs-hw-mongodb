@@ -1,0 +1,1 @@
+const parseNumber = (number, defaultValue);

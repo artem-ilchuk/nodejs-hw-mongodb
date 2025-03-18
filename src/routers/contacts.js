@@ -7,7 +7,7 @@ import {
   patchContactController,
 } from '../controllers/contacts.js';
 
-import { isValidId } from '../middlewares/isValidID.js';
+import { isValidId } from '../middlewares/isValidId.js';
 import { validateBody } from '../middlewares/validateBody.js';
 
 import {

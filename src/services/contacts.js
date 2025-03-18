@@ -10,12 +10,14 @@ export async function getContacts({
   const skip = (page - 1) * perPage;
   const contactQuery = Contact.find();
 
-  if (filter.contactType) {
+  if (typeof filter.contactType !== 'undefined') {
     contactQuery.where('contactType').equals(filter.contactType);
   }
 
-  if (filter.isFavourite !== undefined) {
-    contactQuery.where('isFavourite').equals(filter.isFavourite);
+  if (typeof filter.isFavourite !== 'undefined') {
+    const isFavouriteBool =
+      filter.isFavourite === 'true' || filter.isFavourite === '1';
+    contactQuery.where('isFavourite').equals(isFavouriteBool);
   }
 
   const [total, contacts] = await Promise.all([

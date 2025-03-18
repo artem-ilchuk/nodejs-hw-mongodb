@@ -4,8 +4,16 @@ const parseContactType = (type) => {
 };
 
 const parseIsFavourite = (isFavourite) => {
-  if (typeof isFavourite !== 'boolean') return undefined;
-  return isFavourite;
+  const typedIsFavourite =
+    typeof isFavourite === 'string' ? isFavourite.trim() : String(isFavourite);
+
+  if (typedIsFavourite === 'true' || typedIsFavourite === '1') {
+    return true;
+  }
+  if (typedIsFavourite === 'false' || typedIsFavourite === '0') {
+    return false;
+  }
+  return undefined;
 };
 
 export const parseFilterParams = (query = {}) => {

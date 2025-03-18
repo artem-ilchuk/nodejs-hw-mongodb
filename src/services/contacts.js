@@ -1,4 +1,5 @@
 import Contact from '../models/contact.js';
+import { parseFilterParams } from '../utils/parseFilterParams.js';
 
 export async function getContacts({
   page,
@@ -10,14 +11,14 @@ export async function getContacts({
   const skip = (page - 1) * perPage;
   const contactQuery = Contact.find();
 
-  if (typeof filter.contactType !== 'undefined') {
-    contactQuery.where('contactType').equals(filter.contactType);
+  const { contactType, isFavourite } = parseFilterParams(filter);
+
+  if (contactType) {
+    contactQuery.where('contactType').equals(contactType);
   }
 
-  if (typeof filter.isFavourite !== 'undefined') {
-    const isFavouriteBool =
-      filter.isFavourite === 'true' || filter.isFavourite === '1';
-    contactQuery.where('isFavourite').equals(isFavouriteBool);
+  if (isFavourite !== undefined) {
+    contactQuery.where('isFavourite').equals(isFavourite);
   }
 
   const [total, contacts] = await Promise.all([

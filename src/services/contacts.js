@@ -1,5 +1,10 @@
 import Contact from '../models/contact.js';
+import User from '../models/user.js';
 import { parseFilterParams } from '../utils/parseFilterParams.js';
+
+export const registerUser = async (payload) => {
+  return await User();
+};
 
 export async function getContacts({
   page,
@@ -11,10 +16,10 @@ export async function getContacts({
   const skip = (page - 1) * perPage;
   const contactQuery = Contact.find();
 
-  const { contactType, isFavourite } = parseFilterParams(filter);
+  const { type, isFavourite } = parseFilterParams(filter);
 
-  if (contactType) {
-    contactQuery.where('contactType').equals(contactType);
+  if (type) {
+    contactQuery.where('contactType').equals(type);
   }
 
   if (isFavourite !== undefined) {

@@ -17,25 +17,29 @@ import {
 
 import { ctrlWrapper } from '../utils/ctrlWrapper.js';
 
+import { authenticate } from '../middlewares/authenticate.js';
+
 const router = Router();
 
-router.get('/contacts', ctrlWrapper(getContactsController));
+router.use(authenticate);
 
-router.get('/contacts/:id', isValidId, ctrlWrapper(getContactByIdController));
+router.get('/', ctrlWrapper(getContactsController));
+
+router.get('/:id', isValidId, ctrlWrapper(getContactByIdController));
 
 router.post(
-  '/contacts',
+  '/',
   validateBody(createContactSchema),
   ctrlWrapper(createContactController),
 );
 
 router.patch(
-  '/contacts/:id',
+  '/:id',
   isValidId,
   validateBody(updateContactSchema),
   ctrlWrapper(patchContactController),
 );
 
-router.delete('/contacts/:id', ctrlWrapper(deleteContactController));
+router.delete('/:id', ctrlWrapper(deleteContactController));
 
 export default router;

@@ -1,5 +1,10 @@
 import Contact from '../models/contact.js';
+import User from '../models/user.js';
 import { parseFilterParams } from '../utils/parseFilterParams.js';
+
+export const registerUser = async (payload) => {
+  return await User();
+};
 
 export async function getContacts({
   page,
@@ -7,14 +12,15 @@ export async function getContacts({
   sortBy,
   sortOrder,
   filter,
+  userId,
 }) {
   const skip = (page - 1) * perPage;
-  const contactQuery = Contact.find();
+  const contactQuery = Contact.find({ userId });
 
-  const { contactType, isFavourite } = parseFilterParams(filter);
+  const { type, isFavourite } = parseFilterParams(filter);
 
-  if (contactType) {
-    contactQuery.where('contactType').equals(contactType);
+  if (type) {
+    contactQuery.where('contactType').equals(type);
   }
 
   if (isFavourite !== undefined) {
@@ -42,8 +48,8 @@ export async function getContacts({
   };
 }
 
-export async function getContactById(id) {
-  const filteredContact = await Contact.findById(id);
+export async function getContactById(id, userId) {
+  const filteredContact = await Contact.findOne({ _id: id, userId });
   return filteredContact;
 }
 
@@ -52,10 +58,14 @@ export const createContact = async (payload) => {
   return contact;
 };
 
-export const updateContact = async (contactId, payload, options = {}) => {
-  const renewedContact = await Contact.findByIdAndUpdate(contactId, payload, {
-    new: true,
-  });
+export const updateContact = async (contactId, payload, userId) => {
+  const renewedContact = await Contact.findOneAndUpdate(
+    { _id: contactId, userId },
+    payload,
+    {
+      new: true,
+    },
+  );
 
   if (!renewedContact) return null;
   return {
@@ -64,7 +74,7 @@ export const updateContact = async (contactId, payload, options = {}) => {
   };
 };
 
-export const deleteContact = async (contactId) => {
-  const contact = await Contact.findOneAndDelete({ _id: contactId });
+export const deleteContact = async (contactId, userId) => {
+  const contact = await Contact.findOneAndDelete({ _id: contactId, userId });
   return contact;
 };

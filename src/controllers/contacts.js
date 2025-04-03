@@ -51,24 +51,37 @@ export const getContactByIdController = async (req, res, next) => {
 };
 
 export const createContactController = async (req, res) => {
-  const photoUrl = await uploadPhoto(req.file);
-
-  const contact = await createContact({
+  const contact = {
     ...req.body,
     userId: req.user.id,
-    photo: photoUrl,
-  });
+  };
+
+  const photo = req.file;
+
+  let photoUrl;
+
+  if (photo) {
+    photoUrl = await uploadPhoto(photo);
+  }
+
+  const newContact = await createContact({ ...contact, photo: photoUrl });
 
   res.status(201).json({
     status: 201,
     message: 'Successfully created a contact!',
-    data: contact,
+    data: newContact,
   });
 };
 
-export const patchContactController = async (req, res, next) => {
+export const patchContactController = async (req, res, _next) => {
   const { id } = req.params;
-  const photoUrl = await uploadPhoto(req.file);
+  const photo = req.file;
+
+  let photoUrl;
+
+  if (photo) {
+    photoUrl = await uploadPhoto(req.file);
+  }
 
   const result = await updateContact(
     id,

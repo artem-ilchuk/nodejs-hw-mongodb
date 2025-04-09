@@ -1,0 +1,38 @@
+openapi: 3.1.0
+info:
+  version: 1.0.0
+  title: Your contacts in pocket App
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  description: This is documentation of "Your contacts in pocket App" application
+tags:
+  - name: Users
+    description: Operations related to authentication and authorization
+  - name: Contacts
+    description: Operations related to contacts
+servers:
+  - url: 127.0.0.1:6060
+  - url: https://contacts-app-fgbg.onrender.com
+paths:
+  /auth/register:
+    post: 
+      $ref: ../swagger/path/users/post.yaml
+  /contacts:
+    post:
+      $ref: ../swagger/paths/contacts/post.yaml
+    get:
+      $ref: ../swagger/paths/contacts/get.yaml
+   /contacts/{id}:
+    get:
+      $ref: ../swagger/paths/contacts/{id}/get.yaml
+    patch:
+      $ref: ../swagger/paths/contacts/{id}/patch.yaml
+    delete:
+      $ref: ../swagger/paths/contacts/{id}/delete.yaml        
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

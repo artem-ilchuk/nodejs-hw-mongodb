@@ -2,6 +2,7 @@ import path from 'node:path';
 import fs from 'node:fs/promises';
 import handlebars from 'handlebars';
 import bcrypt from 'bcrypt';
+import crypto from 'crypto';
 import jwt from 'jsonwebtoken';
 import User from '../models/user.js';
 import Session from '../models/session.js';
@@ -129,3 +130,31 @@ export const resetPassword = async (payload) => {
   const encryptedPassword = await bcrypt.hash(payload.password, 10);
   await User.updateOne({ _id: user.id }, { password: encryptedPassword });
 };
+
+export async function loginOrRegister(email, name) {
+  const user = await User.findOne({ email });
+
+  if (!user) {
+    const password = await bcrypt.hash(
+      crypto.randomBytes(30).toString('base64'),
+      10,
+    );
+
+    const newUser = await User.create({
+      name,
+      email,
+      password,
+    });
+
+    return await Session.create({
+      userId: newUser._id,
+      ...createSession(),
+    });
+  }
+
+  await Session.deleteOne({ userId: user._id });
+  return await Session.create({
+    userId: user._id,
+    ...createSession(),
+  });
+}

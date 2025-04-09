@@ -1,0 +1,55 @@
+type: object
+required:
+  - _id
+  - name
+  - phoneNumber
+  - contactType
+  - userId
+  - createdAt
+  - updatedAt
+properties:
+  _id:
+    description: 'Contact`s id. Backend-generated unique identifier.'
+    type: string
+    example: 67c6ec11bea2f2f00f377bb6
+  name:
+    description: 'Contact`s name. Name can only contain letters, numbers, spaces, dashesand and be 3-20 characters long.'
+    type: string
+    example: 'Nelson Clarcson'
+  phoneNumber:
+    description: 'Contact`s phone number. Should contain only numbers, spaces, dashes, or parentheses and be 3-20 characters long.'
+    type: string
+    example: +380000000005
+  email:
+    description: "Contact`s email address. Email must be a valid email address with a '.com' or '.net' domain and be 3-20 characters long."
+    type: string
+    example: nelson89@gmail.com
+  isFavourite:
+    description: 'Indicates whether the contact is marked as favourite.'
+    type: string
+    example: true
+  contactType:
+    description: 'Type of contact'
+    type: string
+    enum: ['work', 'home', 'personal']
+    example: work
+    default: personal
+  photo:
+    description: 'Link to contact`s photo'
+    type: string
+    example: https://res.cloudinary.com/dfboyfozv/image/upload/v1744107940/bdmhcd1pb37zr3pbe4rl.png
+    default: null
+  userId:
+    description: "Contact's user id. Backend-generated unique identifier."
+    type: string
+    example: 65e4decdd286b30065d54af9
+  createdAt:
+    description: 'Contact`s created date'
+    type: string
+    format: date-time
+    example: 2024-05-08T16:12:14.954170
+  updatedAt:
+    description: 'Contact`s updated date'
+    type: string
+    format: date-time
+    example: 2024-05-08T16:12:14.954170

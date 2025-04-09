@@ -1,0 +1,35 @@
+tags:
+  - Users
+summary: Logout user
+operationId: logoutUser
+description: Logs out the authenticated user by clearing the session ID and refresh token cookies.
+parameters:
+  - in: cookie
+    name: sessionId
+    required: true
+    schema:
+      type: string
+      example: 167f69ad009f0dbf4d848c0fa
+      description: ' User`s session id. Backend-generated unique identifier'
+  - in: cookie
+    name: refreshToken
+    required: true
+    schema:
+      type: string
+      example: 167f69ad009f0dbf4d848c0fa
+      description: 'Backend-generated unique refresh token'
+responses:
+  '204':
+    description: '204 No content. Successfully logged out user and a session is cleared '
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+          properties:
+            status:
+              type: integer
+              example: 204
+  '500':
+    $ref: '../../../components/responses/500.yaml'

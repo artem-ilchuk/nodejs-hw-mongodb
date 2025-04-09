@@ -9,25 +9,51 @@ info:
 tags:
   - name: Users
     description: Operations related to authentication and authorization
+
   - name: Contacts
     description: Operations related to contacts
+
 servers:
   - url: 127.0.0.1:6060
   - url: https://contacts-app-fgbg.onrender.com
+
 paths:
+
+  # ==== AUTHENTICATION ROUTES ====
+
   /auth/register:
     post: 
-      $ref: ../swagger/path/users/post.yaml
+      $ref: ../swagger/path/users/register/post.yaml
+
+  /auth/login:
+    post:
+     $ref: ../swagger/paths/users/login/post.yaml
+     
+  /auth/logout:
+    post: 
+      $ref: ../swagger/paths/users/logout/post.yaml
+      
+  /auth/refresh:
+    post: 
+      $ref: ../swagger/paths/users/refresh/post/yaml    
+    
+      
+   # ======= CONTACT ROUTES =======
+
   /contacts:
     post:
       $ref: ../swagger/paths/contacts/post.yaml
+
     get:
       $ref: ../swagger/paths/contacts/get.yaml
+
    /contacts/{id}:
     get:
       $ref: ../swagger/paths/contacts/{id}/get.yaml
+
     patch:
       $ref: ../swagger/paths/contacts/{id}/patch.yaml
+
     delete:
       $ref: ../swagger/paths/contacts/{id}/delete.yaml        
 

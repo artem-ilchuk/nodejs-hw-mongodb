@@ -20,8 +20,8 @@ parameters:
     name: sortBy
     schema:
       type: string
+      description: ' _id, name, phoneNumber, email, isFavourite, contactType, createdAt, updatedAt fields can be mentioned. Default value - _id'
       example: 'name'
-    description: ' _id, name, phoneNumber, email, isFavourite, contactType, createdAt, updatedAt fields can be mentioned. Default value - _id'
   - in: query
     name: sortOrder
     schema:

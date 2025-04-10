@@ -1429,7 +1429,6 @@
           "_id",
           "name",
           "email",
-          "password",
           "createdAt",
           "updatedAt"
         ],
@@ -1448,11 +1447,6 @@
             "description": " User`s email address. Email must be a valid email address.",
             "type": "string",
             "example": "nelson89@gmail.com"
-          },
-          "password": {
-            "description": "User`s password.",
-            "type": "string",
-            "example": "querty1234"
           },
           "createdAt": {
             "description": "User`s created date",

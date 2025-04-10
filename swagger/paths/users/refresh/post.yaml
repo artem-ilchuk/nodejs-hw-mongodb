@@ -3,6 +3,8 @@ tags:
 summary: Refresh user`s access rights.
 operationId: refreshUser
 description: Refresh user`s access rights, creating a new pair of access and refresh tokens.
+security:
+  - cookieAuth: []
 parameters:
   - in: cookie
     name: sessionId
@@ -38,28 +40,28 @@ responses:
               example: Successfully refreshed a session!
             data:
               type: object
-            required:
+              required:
                 - accessToken
               properties:
                 accessToken:
                   type: string
                   description: JWT access token
-                  example: M8UavAGWqMJiC5qPStjpa7WefmGlViYYNMnUzfsv'
+                  example: M8UavAGWqMJiC5qPStjpa7WefmGlViYYNMnUzfsv
   '401':
     description: 'Unauthorized Error'
     content:
-     application/json:
-      schema:
-       type: object
-       required:
-         - status
-         - message
-       properties:
-         status:
-          type: integer
-          example: 401
-         message:
-          type: string
-          example: Session not found                
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+          properties:
+            status:
+              type: integer
+              example: 401
+            message:
+              type: string
+              example: Session not found
   '500':
     $ref: '../../../components/responses/500.yaml'

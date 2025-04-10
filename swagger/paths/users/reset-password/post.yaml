@@ -1,34 +1,33 @@
 tags:
   - Users
-summary: Create a new user
-operationId: createUser
-description: 'Register user with payload'
-security: []
+summary: Reset user`s password
+operationId: ResetPasswordUser
+description: 'Resets the user`s password using a JWT token received via email.
+  The token must be sent along with the new password in the request body.
+  Token is verified on the backend and used to identify the user.'
+security:
+  - bearerAuth: []
 requestBody:
+  required: true
   content:
     application/json:
       schema:
         type: object
         required:
-          - name
-          - email
+          - token
           - password
         properties:
-          name:
-            description: 'User`s name. Should be 3-20 characters long.'
+          token:
             type: string
-            example: 'Nelson Clarcson'
-          email:
-            description: ' User`s email address. Email must be a valid email address.'
-            type: string
-            example: nelson89@gmail.com
+            description: JWT token received by email. Must be valid and not expired.
+            example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
           password:
-            description: 'User`s password.'
             type: string
-            example: querty1234
+            description: New password for the user
+            example: Querty3456
 responses:
-  '201':
-    description: 'Successfully registered a user!'
+  '200':
+    description: 'Password has been successfully reset.'
     content:
       application/json:
         schema:
@@ -40,15 +39,15 @@ responses:
           properties:
             status:
               type: integer
-              example: 201
+              example: 200
             message:
               type: string
-              example: Successfully registered a user!
+              example: Password has been successfully reset.
             data:
               type: object
-              $ref: ../../../components/schemas/user.yaml
-  '400':
-    description: 'Bad Request'
+              example: {}
+  '401':
+    description: 'Unauthorized Error'
     content:
       application/json:
         schema:
@@ -59,14 +58,14 @@ responses:
           properties:
             status:
               type: integer
-              example: 400
+              example: 401
             message:
               type: array
               items:
                 type: string
-                example: '"email" is required'
-  '409':
-    description: 'Conflict. Email is in use'
+                example: 'Token is expired or invalid.'
+  '404':
+    description: 'User not found'
     content:
       application/json:
         schema:
@@ -77,9 +76,10 @@ responses:
           properties:
             status:
               type: integer
-              example: 409
+              example: 404
             message:
-              type: array
-              example: 'Email in use'
+              type: string
+              example: User not found
+
   '500':
     $ref: '../../../components/responses/500.yaml'

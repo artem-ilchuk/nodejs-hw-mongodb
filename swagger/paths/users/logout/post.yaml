@@ -3,6 +3,8 @@ tags:
 summary: Logout user
 operationId: logoutUser
 description: Logs out the authenticated user by clearing the session ID and refresh token cookies.
+security:
+  - cookieAuth: []
 parameters:
   - in: cookie
     name: sessionId
@@ -31,5 +33,21 @@ responses:
             status:
               type: integer
               example: 204
+  '400':
+    description: 'Bad Request.'
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+          properties:
+            status:
+              type: integer
+              example: 400
+            message:
+              type: string
+              example: 'Missing or invalid sessionId or refreshToken.'
   '500':
     $ref: '../../../components/responses/500.yaml'

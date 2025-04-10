@@ -12,7 +12,7 @@ parameters:
     schema:
       type: string
       example: '67c6ec11bea2f2f00f377bb6'
-requedtBody:
+requestBody:
   content:
     multipart/form-data:
       schema:

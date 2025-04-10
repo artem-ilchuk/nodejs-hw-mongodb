@@ -1,11 +1,12 @@
 tags:
   - Users
-summary: Login user
-operationId: loginUser
-description: 'Login existing user in a database with payload'
-security:
-  - cookieAuth: []
-  - refreshTokenAuth: []
+summary: Send email to reset user`s password
+operationId: sendResetPasswordUser
+description:
+  'Sends a password reset email to the user with a secure link containing a JWT token.
+  The token is embedded into an HTML email and is valid for 5 minutes.
+  Clicking the link redirects the user to the frontend reset password form.'
+security: []
 requestBody:
   content:
     application/json:
@@ -13,19 +14,14 @@ requestBody:
         type: object
         required:
           - email
-          - password
         properties:
           email:
             description: ' User`s email address. Email must be a valid email address.'
             type: string
             example: nelson89@gmail.com
-          password:
-            description: 'User`s password.'
-            type: string
-            example: querty1234
 responses:
   '200':
-    description: 'Successfully logged in an user!'
+    description: 'Reset password email has been successfully sent.'
     content:
       application/json:
         schema:
@@ -40,16 +36,11 @@ responses:
               example: 200
             message:
               type: string
-              example: Successfully logged in an user!
+              example: Reset password email has been successfully sent.
             data:
               type: object
-              required:
-                - accessToken
-              properties:
-                accessToken:
-                  type: string
-                  description: JWT access token
-                  example: M8UavAGWqMJiC5qPStjpa7WefmGlViYYNMnUzfsv
+              description: Empty object. JWT token is sent via email, not returned in response.
+              example: {}
   '400':
     description: 'Bad Request'
     content:
@@ -67,6 +58,20 @@ responses:
               type: array
               items:
                 type: string
-                example: 'Email or password is incorrect'
+                example: '"email" is required'
   '500':
-    $ref: '../../../components/responses/500.yaml'
+    description: Internal Server Error
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+          properties:
+            status:
+              type: integer
+              example: 500
+            message:
+              type: string
+              example: Failed to send the email, please try again later.

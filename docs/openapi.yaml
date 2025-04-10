@@ -14,31 +14,45 @@ tags:
     description: Operations related to contacts
 
 servers:
-  - url: 127.0.0.1:6060
+  - url: http://127.0.0.1:6060
   - url: https://contacts-app-fgbg.onrender.com
 
 paths:
-
   # ==== AUTHENTICATION ROUTES ====
 
   /auth/register:
-    post: 
-      $ref: ../swagger/path/users/register/post.yaml
+    post:
+      $ref: ../swagger/paths/users/register/post.yaml
 
   /auth/login:
     post:
-     $ref: ../swagger/paths/users/login/post.yaml
-     
+      $ref: ../swagger/paths/users/login/post.yaml
+
   /auth/logout:
-    post: 
+    post:
       $ref: ../swagger/paths/users/logout/post.yaml
-      
+
   /auth/refresh:
-    post: 
-      $ref: ../swagger/paths/users/refresh/post/yaml    
-    
-      
-   # ======= CONTACT ROUTES =======
+    post:
+      $ref: ../swagger/paths/users/refresh/post.yaml
+
+  /auth/send-reset-email:
+    post:
+      $ref: ../swagger/paths/users/send-reset-email/post.yaml
+
+  /auth/reset-pwd:
+    post:
+      $ref: ../swagger/paths/users/reset-password/post.yaml
+
+  /auth/get-oauth-url:
+    get:
+      $ref: ../swagger/paths/users/get-oauth-url/get.yaml
+
+  /auth/confirm-oauth:
+    post:
+      $ref: ../swagger/paths/users/confirm-oauth/post.yaml
+
+  # ======= CONTACT ROUTES =======
 
   /contacts:
     post:
@@ -47,7 +61,7 @@ paths:
     get:
       $ref: ../swagger/paths/contacts/get.yaml
 
-   /contacts/{id}:
+  /contacts/{id}:
     get:
       $ref: ../swagger/paths/contacts/{id}/get.yaml
 
@@ -55,10 +69,20 @@ paths:
       $ref: ../swagger/paths/contacts/{id}/patch.yaml
 
     delete:
-      $ref: ../swagger/paths/contacts/{id}/delete.yaml        
+      $ref: ../swagger/paths/contacts/{id}/delete.yaml
 
 components:
   securitySchemes:
     bearerAuth:
       type: http
       scheme: bearer
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionId
+      description: 'Session ID stored in a cookie, used for authentication.'
+    refreshTokenAuth:
+      type: apiKey
+      in: cookie
+      name: refreshToken
+      description: 'Refresh token stored in a cookie, used for refreshing the session.'

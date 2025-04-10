@@ -1,31 +1,29 @@
 tags:
   - Users
-summary: Login user
-operationId: loginUser
-description: 'Login existing user in a database with payload'
+summary: Confirm Google OAuth login
+operationId: confirmGoogleOAuth
 security:
-  - cookieAuth: []
-  - refreshTokenAuth: []
+  - bearerAuth: []
+description:
+  'Confirms Google OAuth login by validating the authorization code received from the frontend,
+  then logs in or registers the user and returns an access token.'
 requestBody:
+  required: true
   content:
     application/json:
       schema:
         type: object
         required:
-          - email
-          - password
+          - code
         properties:
-          email:
-            description: ' User`s email address. Email must be a valid email address.'
+          code:
             type: string
-            example: nelson89@gmail.com
-          password:
-            description: 'User`s password.'
-            type: string
-            example: querty1234
+            description: Authorization code returned by Google after user login
+            example: 4/0Ab_5qlnJEkxXcVVI2TlN9K0nZE8UuUlbUlkFecI3cYEarbCm_isP8krv9--KgnCl6jwlfA
+
 responses:
   '200':
-    description: 'Successfully logged in an user!'
+    description: Successfully logged in user via Google OAuth
     content:
       application/json:
         schema:
@@ -48,10 +46,10 @@ responses:
               properties:
                 accessToken:
                   type: string
-                  description: JWT access token
-                  example: M8UavAGWqMJiC5qPStjpa7WefmGlViYYNMnUzfsv
-  '400':
-    description: 'Bad Request'
+                  example: x6NhBxNMlqETl7lqaLnaFPfTjNkj7nPYG7ScULoA
+
+  '401':
+    description: Invalid or expired code
     content:
       application/json:
         schema:
@@ -62,11 +60,10 @@ responses:
           properties:
             status:
               type: integer
-              example: 400
+              example: 401
             message:
-              type: array
-              items:
-                type: string
-                example: 'Email or password is incorrect'
+              type: string
+              example: Invalid authorization code
+
   '500':
     $ref: '../../../components/responses/500.yaml'

@@ -5,9 +5,11 @@ import {
   refreshUsersSession,
   requestResetToken,
   resetPassword,
+  loginOrRegister,
 } from '../services/auth.js';
 import { THIRTY_DAYS } from '../constants/index.js';
 import { setSessionCookies } from '../utils/setSessionCookies.js';
+import { getOAuthURL, validateCode } from '../utils/googleOAuth2.js';
 
 export const registerUserController = async (req, res) => {
   const user = await registerUser(req.body);
@@ -79,3 +81,33 @@ export const resetPasswordController = async (req, res) => {
     data: {},
   });
 };
+
+export const getGoogleOAuthUrlController = async (_req, res) => {
+  const url = getOAuthURL();
+  res.json({
+    status: 200,
+    message: 'Successfully get Google OAuth url!',
+    data: {
+      oauth_url: url,
+    },
+  });
+};
+
+export async function confirmOAuthController(req, res) {
+  const ticket = await validateCode(req.body.code);
+
+  const session = await loginOrRegister(
+    ticket.payload.email,
+    ticket.payload.name,
+  );
+
+  setSessionCookies(res, session, THIRTY_DAYS);
+
+  res.json({
+    status: 200,
+    message: 'Successfully logged in an user!',
+    data: {
+      accessToken: session.accessToken,
+    },
+  });
+}

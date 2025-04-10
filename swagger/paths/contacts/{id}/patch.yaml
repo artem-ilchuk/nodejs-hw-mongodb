@@ -1,0 +1,75 @@
+tags:
+  - Contacts
+summary: Update an existing contact
+operationId: patchContact
+description: 'Patch contact by id'
+security:
+  - bearerAuth: []
+parameters:
+  - in: path
+    name: id
+    required: true
+    schema:
+      type: string
+      example: '67c6ec11bea2f2f00f377bb6'
+requestBody:
+  content:
+    multipart/form-data:
+      schema:
+        type: object
+        properties:
+          name:
+            description: 'Contact`s name. Name can only contain letters, numbers, spaces, dashesand and be 3-20 characters long.'
+            type: string
+            example: 'Nelson Clarcson'
+          phoneNumber:
+            description: 'Contact`s phone number. Should contain only numbers, spaces, dashes, or parentheses and be 3-20 characters long.'
+            type: string
+            example: +380000000005
+          email:
+            description: "Contact`s email address. Email must be a valid email address with a '.com' or '.net' domain and be 3-20 characters long."
+            type: string
+            example: nelson89@gmail.com
+          isFavourite:
+            description: 'Indicates whether the contact is marked as favourite.'
+            type: string
+            example: true
+          contactType:
+            description: 'Type of contact'
+            type: string
+            enum: ['work', 'home', 'personal']
+            example: work
+            default: personal
+          photo:
+            description: 'Link to contact`s photo'
+            type: string
+            format: binary
+responses:
+  '200':
+    description: 'Patch contact by id'
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+            - data
+          properties:
+            status:
+              type: integer
+              example: 200
+            message:
+              type: string
+              example: Successfully patched a contact!
+            data:
+              type: object
+              $ref: '../../../components/schemas/contact.yaml'
+  '400':
+    $ref: '../../../components/responses/400.yaml'
+  '401':
+    $ref: '../../../components/responses/401.yaml'
+  '404':
+    $ref: '../../../components/responses/404.yaml'
+  '500':
+    $ref: '../../../components/responses/500.yaml'

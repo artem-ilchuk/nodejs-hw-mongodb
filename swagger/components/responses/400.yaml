@@ -1,0 +1,15 @@
+description: 'Bad Request. Contact`s ID is not valid'
+content:
+  application/json:
+    schema:
+      type: object
+      required:
+        - status
+        - message
+      properties:
+        status:
+          type: integer
+          example: 400
+        message:
+          type: string
+          example: ID is not valid

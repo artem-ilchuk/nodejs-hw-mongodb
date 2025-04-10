@@ -1,0 +1,86 @@
+tags:
+  - Contacts
+summary: Create contact
+operationId: createContact
+description: 'Create a contact with payload'
+security:
+  - bearerAuth: []
+requestBody:
+  content:
+    multipart/form-data:
+      schema:
+        type: object
+        required:
+          - name
+          - phoneNumber
+          - contactType
+        properties:
+          name:
+            description: 'Contact`s name. Name can only contain letters, numbers, spaces, dashesand and be 3-20 characters long.'
+            type: string
+            example: 'Nelson Clarcson'
+          phoneNumber:
+            description: 'Contact`s phone number. Should contain only numbers, spaces, dashes, or parentheses and be 3-20 characters long.'
+            type: string
+            example: +380000000005
+          email:
+            description: "Contact`s email address. Email must be a valid email address with a '.com' or '.net' domain and be 3-20 characters long."
+            type: string
+            example: nelson89@gmail.com
+          isFavourite:
+            description: 'Indicates whether the contact is marked as favourite.'
+            type: string
+            example: true
+          contactType:
+            description: 'Type of contact'
+            type: string
+            enum: ['work', 'home', 'personal']
+            example: work
+            default: personal
+          photo:
+            description: 'Link to contact`s photo'
+            type: string
+            format: binary
+responses:
+  '201':
+    description: 'Successfully created a contact!'
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+            - data
+          properties:
+            status:
+              type: integer
+              example: 201
+            message:
+              type: string
+              example: Successfully created a contact!
+            data:
+              type: object
+              $ref: '../../components/schemas/contact.yaml'
+  '400':
+    description: 'Bad Request'
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+          properties:
+            status:
+              type: integer
+              example: 400
+            message:
+              type: array
+              items:
+                type: string
+                example: '"name" is required'
+  '401':
+    $ref: '../../components/responses/401.yaml'
+  '500':
+    $ref: '../../components/responses/500.yaml'

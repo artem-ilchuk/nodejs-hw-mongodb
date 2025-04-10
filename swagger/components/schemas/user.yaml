@@ -1,0 +1,35 @@
+type: object
+required:
+  - _id
+  - name
+  - email
+  - password
+  - createdAt
+  - updatedAt
+properties:
+  _id:
+    description: 'User`s id. Backend-generated unique identifier.'
+    type: string
+    example: 67ef93c856930f2c47efa213
+  name:
+    description: 'User`s name. Should be 3-20 characters long.'
+    type: string
+    example: 'Nelson Clarcson'
+  email:
+    description: ' User`s email address. Email must be a valid email address.'
+    type: string
+    example: nelson89@gmail.com
+  password:
+    description: 'User`s password.'
+    type: string
+    example: querty1234
+  createdAt:
+    description: 'User`s created date'
+    type: string
+    format: date-time
+    example: 2024-05-08T16:12:14.954170
+  updatedAt:
+    description: 'User`s updated date'
+    type: string
+    format: date-time
+    example: 2024-05-08T16:12:14.954170

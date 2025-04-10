@@ -1,0 +1,53 @@
+tags:
+  - Users
+summary: Get Google OAuth URL
+operationId: getGoogleOAuthUrl
+description:
+  'Returns a Google OAuth authorization URL for user login/registration via Google.
+  The client should redirect the user to this URL to initiate the authentication flow.'
+security: []
+responses:
+  '200':
+    description: Google OAuth URL successfully generated
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+            - data
+          properties:
+            status:
+              type: integer
+              example: 200
+            message:
+              type: string
+              example: Successfully get Google OAuth url!
+            data:
+              type: object
+              required:
+                - oauth_url
+              properties:
+                oauth_url:
+                  type: string
+                  format: uri
+                  example: https://accounts.google.com/o/oauth2/v2/auth?scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile&response_type=code&client_id=956191364387-ttignq6rj4bmq0nufiu2caq2f0vtd9pq.apps.googleusercontent.com&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Foauth-redirect
+  '400':
+    description: Bad Request - Invalid or missing parameters
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - status
+            - message
+          properties:
+            status:
+              type: integer
+              example: 400
+            message:
+              type: string
+              example: 'Invalid parameters'
+  '500':
+    $ref: '../../../components/responses/500.yaml'
